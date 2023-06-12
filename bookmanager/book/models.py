@@ -17,19 +17,26 @@ from django.db import models
 
 class BookInfo(models.Model):
     # id
-    name = models.CharField(max_length=10)
+    name = models.CharField(max_length=10,verbose_name='书名')
 
     class Meta:
         db_table = 'bookinfo'  # 指定数据库表名
         verbose_name = '图书'  # 在admin站点中显示的名称
 
+    # 重写 str方法以让admin来显示书籍名字
+    def __str__(self):
+        return self.name
+
 
 class PeopleInfo(models.Model):
-    name = models.CharField(max_length=10)
-    gender = models.BooleanField()
+    name = models.CharField(max_length=10,verbose_name='人物名称')
+    gender = models.BooleanField(verbose_name='性别')
     # 外键约束: 人物属于哪本书
-    book = models.ForeignKey(BookInfo, on_delete=models.CASCADE)
+    book = models.ForeignKey(BookInfo, on_delete=models.CASCADE,verbose_name='属于的书籍')
 
     class Meta:
         db_table = 'peopleinfo'
         verbose_name = '人物'
+
+    def __str__(self):
+        return self.name
